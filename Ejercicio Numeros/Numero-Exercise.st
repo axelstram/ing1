@@ -309,15 +309,20 @@ Object subclass: #Numero
 
 	self subclassResponsibility ! !
 
-!Numero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 22:49'!
-/ aDivisor
-
-	self subclassResponsibility ! !
+!Numero methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:13:35'!
+/ aDivisor 
+	^aDivisor invert * self.
+! !
 
 !Numero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 22:48'!
 invalidNumberType
 
 	self error: self class invalidNumberTypeErrorDescription! !
+
+!Numero methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:04:36'!
+invert
+	self subclassResponsibility 
+	! !
 
 !Numero methodsFor: 'arithmetic operations' stamp: 'NR 9/23/2018 23:37:13'!
 negated
@@ -373,18 +378,10 @@ Numero subclass: #Entero
 	^anAdder addEntero: self
 ! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:10:45'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:06:45'!
 - aSubtrahend 
-	| negativeOne |
-	
-	negativeOne := Entero with: -1.
-	^aSubtrahend * negativeOne addEntero: self.
+	^aSubtrahend negated addEntero: self.
 ! !
-
-!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:26:15'!
-/ aDivisor 
-	"^aDivisor divideByAnEntero: self."
-	^Fraccion with: self over: aDivisor! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:55'!
 // aDivisor 
@@ -398,14 +395,6 @@ addEntero: unEntero
 !Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 20:40:52'!
 addFraction: aFraction
 	^aFraction addEntero: self.! !
-
-!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:13:42'!
-divideByAFraccion: unaFraccion
-	^Fraccion with: self * unaFraccion denominator over: unaFraccion numerator.! !
-
-!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:12:42'!
-divideByAnEntero: unEntero
-	^Fraccion with: self over: unEntero.! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HAW 9/24/2018 08:47:50'!
 fibonacci
@@ -425,6 +414,14 @@ fibonacci
 greatestCommonDivisorWith: anEntero 
 	
 	^self class with: (value gcd: anEntero integerValue)! !
+
+!Entero methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:06:02'!
+invert
+	| one |
+	
+	one := Entero with: 1.
+	
+	^Fraccion with: one over: self.! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 20:42:43'!
 multiplyWithEntero: unEntero
@@ -519,17 +516,9 @@ Numero subclass: #Fraccion
 	^anAdder addFraction: self.
 ! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:09:34'!
-- aSubtrahend 
-	| negativeOne |
-	
-	negativeOne :=  Entero with: -1.	
-	^aSubtrahend * negativeOne addFraction: self.	! !
-
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:26:46'!
-/ aDivisor 
-	^(numerator * aDivisor denominator) / (denominator * aDivisor numerator)
-	"^aDivisor divideByAFraccion: self."! !
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:06:56'!
+- aSubtrahend 	
+	^aSubtrahend negated addFraction: self.	! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 20:40:07'!
 addEntero: unEntero
@@ -544,13 +533,9 @@ addFraction: aFraction
 	
 	^newNumerator / newDenominator! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:16:22'!
-divideByAFraccion: unaFraccion 
-	^(numerator * unaFraccion denominator) / (denominator * unaFraccion numerator).! !
-
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 21:17:02'!
-divideByAnEntero: unEntero
-	^Fraccion with: unEntero * denominator over: numerator.! !
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/13/2019 14:09:23'!
+invert
+	^Fraccion with: denominator over: numerator.! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'a 9/12/2019 20:49:31'!
 multiplyWithEntero: unEntero
