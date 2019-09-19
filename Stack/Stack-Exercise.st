@@ -144,6 +144,137 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:21:28'!
+test01FindsRightSentence
+	| stack SentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push: 'winning is everything'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+	
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+
+	self assert: (SentenceFinder find: 'Wint') includes: 'Winter is here'.
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:22:06'!
+test02OnlyReturnsRightSentece
+	| stack SentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push: 'winning is everything'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+	
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+	
+	self deny: ((SentenceFinder find: 'Wint') includes: 'winter is coming').
+	self deny: ((SentenceFinder find: 'Wint') includes: 'winning is everything').
+	self deny: ((SentenceFinder find: 'Wint') includes: 'The winds of Winter').
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:22:15'!
+test03FindsAllSentencesWithPrefix
+	| stack SentenceFinder|
+	
+	stack := OOStack new.
+	stack push: 'Winter is coming'.
+	stack push:  'Winter is here'.
+	stack push:  'Winterfell'.
+	
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+	
+	self assert: (SentenceFinder find: 'Wint') includes: 'Winter is coming'.
+	self assert: (SentenceFinder find: 'Wint') includes: 'Winter is here'.
+	self assert: (SentenceFinder find: 'Wint') includes: 'Winterfell'.
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:22:25'!
+test04FindsRepeatedSentences
+	| stack SentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push:  'Winter is here'.
+	stack push: 'winning is everything'.
+	stack push:  'Winter is here'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+	
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+	
+	self assert: ((SentenceFinder find: 'Wint') occurrencesOf: 'Winter is here' ) equals: 3.
+	
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:22:35'!
+test05StackStaysTheSame
+	| stack SentenceFinder copyStackBeforeSentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push: 'winning is everything'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+	
+	copyStackBeforeSentenceFinder  _ stack.
+	
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+	
+	SentenceFinder find: 'Wint'.
+	
+	self assert: copyStackBeforeSentenceFinder size equals: stack size.
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:26:01'!
+test06PrefixCantBeBlank
+	| stack SentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push: 'winning is everything'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+		
+	self
+		should: [ SentenceFinder find: '' ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix emptyPrefixErrorDescription ]
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:46:40'!
+test07PrefixCantHaveSpaces
+	| stack SentenceFinder |
+	
+	stack := OOStack new.
+	stack push: 'winter is coming'.
+	stack push: 'winning is everything'.
+	stack push:  'The winds of Winter'.
+	stack push:  'Winter is here'.
+
+	SentenceFinder := SentenceFinderByPrefix new with: stack.
+		
+	self
+		should: [ SentenceFinder find: 'Win is co' ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix prefixWithSpacesErrorDescription]
+
+	
+! !
+
 
 !classDefinition: #ContainerIterator category: #'Stack-Exercise'!
 Object subclass: #ContainerIterator
@@ -253,9 +384,13 @@ with: aContainer
 	container := aContainer.! !
 
 
-!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 01:29:30'!
+!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 14:44:49'!
 find: aPrefix
 	| iterator phrasesWithThePrefix |
+
+	aPrefix isEmpty ifTrue: [self error: self class emptyPrefixErrorDescription]. 
+	(aPrefix includesSubString: ' ') ifTrue: [self error: self class prefixWithSpacesErrorDescription].
+	
 	
 	iterator := ContainerIterator new.
 	iterator setContainer: container.
@@ -275,6 +410,20 @@ find: aPrefix
 !SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/18/2019 01:12:40'!
 phrase: aPhrase hasPrefix: aPrefix
 	^aPhrase beginsWith: aPrefix ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'SentenceFinderByPrefix class' category: #'Stack-Exercise'!
+SentenceFinderByPrefix class
+	instanceVariableNames: ''!
+
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'a 9/19/2019 14:28:54'!
+emptyPrefixErrorDescription
+	^'El prefijo no puede ser vacío'! !
+
+!SentenceFinderByPrefix class methodsFor: 'error descriptions' stamp: 'a 9/19/2019 14:36:39'!
+prefixWithSpacesErrorDescription
+	^'El prefijo no puede contener espacios vacíos'! !
 
 
 !classDefinition: #StackActionDecider category: #'Stack-Exercise'!
