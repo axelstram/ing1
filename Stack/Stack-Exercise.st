@@ -276,39 +276,6 @@ test07PrefixCantHaveSpaces
 ! !
 
 
-!classDefinition: #ContainerIterator category: #'Stack-Exercise'!
-Object subclass: #ContainerIterator
-	instanceVariableNames: 'container'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!ContainerIterator methodsFor: 'query' stamp: 'a 9/18/2019 00:18:33'!
-hasMoreElements
-	^container size > 0! !
-
-!ContainerIterator methodsFor: 'query' stamp: 'a 9/18/2019 00:17:17'!
-next
-	container size > 0 ifTrue: [^container pop].
-	
-	^self class containerHasNoMoreElements 	! !
-
-
-!ContainerIterator methodsFor: 'manipulation' stamp: 'a 9/18/2019 00:50:24'!
-setContainer: aContainer
-	container := aContainer veryDeepCopy.! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'ContainerIterator class' category: #'Stack-Exercise'!
-ContainerIterator class
-	instanceVariableNames: ''!
-
-!ContainerIterator class methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:17:01'!
-containerHasNoMoreElements
-	^'The container has no more elements'.! !
-
-
 !classDefinition: #OOStack category: #'Stack-Exercise'!
 Object subclass: #OOStack
 	instanceVariableNames: 'values actionDeciders'
@@ -384,7 +351,7 @@ with: aContainer
 	container := aContainer.! !
 
 
-!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 14:44:49'!
+!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 17:45:48'!
 find: aPrefix
 	| iterator phrasesWithThePrefix |
 
@@ -392,8 +359,8 @@ find: aPrefix
 	(aPrefix includesSubString: ' ') ifTrue: [self error: self class prefixWithSpacesErrorDescription].
 	
 	
-	iterator := ContainerIterator new.
-	iterator setContainer: container.
+	iterator := StackIterator new.
+	iterator setStack: container.
 	
 	phrasesWithThePrefix := OrderedCollection new.
 	
@@ -441,12 +408,11 @@ StackActionDecider subclass: #EmptyStackActionDecider
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!EmptyStackActionDecider methodsFor: 'as yet unclassified' stamp: 'a 9/16/2019 21:32:58'!
+!EmptyStackActionDecider methodsFor: 'decisions' stamp: 'a 9/19/2019 17:43:04'!
 decidePopAction: anEmptyStack
-	anEmptyStack getActionDeciders add: self.
-	^self error: OOStack stackEmptyErrorDescription.! !
+	^self decideTopAction: anEmptyStack ! !
 
-!EmptyStackActionDecider methodsFor: 'as yet unclassified' stamp: 'a 9/16/2019 21:35:18'!
+!EmptyStackActionDecider methodsFor: 'decisions' stamp: 'a 9/16/2019 21:35:18'!
 decideTopAction: anEmptyStack
 	anEmptyStack getActionDeciders add: self.
 	^self error: OOStack stackEmptyErrorDescription.! !
@@ -470,10 +436,43 @@ StackActionDecider subclass: #NonEmptyStackActionDecider
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NonEmptyStackActionDecider methodsFor: 'as yet unclassified' stamp: 'a 9/16/2019 21:07:17'!
+!NonEmptyStackActionDecider methodsFor: 'decisions' stamp: 'a 9/16/2019 21:07:17'!
 decidePopAction: aStack
 	^true! !
 
-!NonEmptyStackActionDecider methodsFor: 'as yet unclassified' stamp: 'a 9/16/2019 21:35:25'!
+!NonEmptyStackActionDecider methodsFor: 'decisions' stamp: 'a 9/16/2019 21:35:25'!
 decideTopAction: aStack
 	^true! !
+
+
+!classDefinition: #StackIterator category: #'Stack-Exercise'!
+Object subclass: #StackIterator
+	instanceVariableNames: 'stack'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!StackIterator methodsFor: 'query' stamp: 'a 9/19/2019 17:45:56'!
+hasMoreElements
+	^stack size > 0! !
+
+!StackIterator methodsFor: 'query' stamp: 'a 9/19/2019 17:46:04'!
+next
+	stack size > 0 ifTrue: [^stack pop].
+	
+	^self class containerHasNoMoreElements 	! !
+
+
+!StackIterator methodsFor: 'manipulation' stamp: 'a 9/19/2019 17:45:25'!
+setStack: aStack
+	stack := aStack veryDeepCopy.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'StackIterator class' category: #'Stack-Exercise'!
+StackIterator class
+	instanceVariableNames: ''!
+
+!StackIterator class methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:17:01'!
+containerHasNoMoreElements
+	^'The container has no more elements'.! !
