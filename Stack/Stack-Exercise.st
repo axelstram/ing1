@@ -213,7 +213,7 @@ test04FindsRepeatedSentences
 	
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:22:35'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'a 9/19/2019 14:52:50'!
 test05StackStaysTheSame
 	| stack SentenceFinder copyStackBeforeSentenceFinder |
 	
@@ -229,7 +229,7 @@ test05StackStaysTheSame
 	
 	SentenceFinder find: 'Wint'.
 	
-	self assert: copyStackBeforeSentenceFinder size equals: stack size.
+	self assert: copyStackBeforeSentenceFinder = stack.
 	
 ! !
 
