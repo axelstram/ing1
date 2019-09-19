@@ -152,17 +152,18 @@ Object subclass: #ContainerIterator
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:18:33'!
+!ContainerIterator methodsFor: 'query' stamp: 'a 9/18/2019 00:18:33'!
 hasMoreElements
 	^container size > 0! !
 
-!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:17:17'!
+!ContainerIterator methodsFor: 'query' stamp: 'a 9/18/2019 00:17:17'!
 next
 	container size > 0 ifTrue: [^container pop].
 	
 	^self class containerHasNoMoreElements 	! !
 
-!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:50:24'!
+
+!ContainerIterator methodsFor: 'manipulation' stamp: 'a 9/18/2019 00:50:24'!
 setContainer: aContainer
 	container := aContainer veryDeepCopy.! !
 
@@ -251,9 +252,6 @@ Object subclass: #SentenceFinderByPrefix
 with: aContainer
 	container := aContainer.! !
 
-
-!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/18/2019 01:08:14'!
-element: anElement hasPrefix: aPrefix! !
 
 !SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 01:29:30'!
 find: aPrefix
