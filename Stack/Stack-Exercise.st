@@ -145,6 +145,38 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	category: 'Stack-Exercise'!
 
 
+!classDefinition: #ContainerIterator category: #'Stack-Exercise'!
+Object subclass: #ContainerIterator
+	instanceVariableNames: 'container'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:18:33'!
+hasMoreElements
+	^container size > 0! !
+
+!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:17:17'!
+next
+	container size > 0 ifTrue: [^container pop].
+	
+	^self class containerHasNoMoreElements 	! !
+
+!ContainerIterator methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:50:24'!
+setContainer: aContainer
+	container := aContainer veryDeepCopy.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'ContainerIterator class' category: #'Stack-Exercise'!
+ContainerIterator class
+	instanceVariableNames: ''!
+
+!ContainerIterator class methodsFor: 'as yet unclassified' stamp: 'a 9/18/2019 00:17:01'!
+containerHasNoMoreElements
+	^'The container has no more elements'.! !
+
+
 !classDefinition: #OOStack category: #'Stack-Exercise'!
 Object subclass: #OOStack
 	instanceVariableNames: 'values actionDeciders'
@@ -152,13 +184,12 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'initialization' stamp: 'a 9/16/2019 20:58:39'!
+!OOStack methodsFor: 'initialization' stamp: 'a 9/17/2019 23:54:24'!
 initialize
 	values := OrderedCollection new.
 	actionDeciders := OrderedCollection new.
 	actionDeciders add: EmptyStackActionDecider new.
-	
-	^self! !
+	! !
 
 
 !OOStack methodsFor: 'manipulation' stamp: 'a 9/16/2019 21:34:42'!
@@ -174,10 +205,6 @@ pop
 push: anElement
 	values add: anElement.
 	actionDeciders add: NonEmptyStackActionDecider new.! !
-
-!OOStack methodsFor: 'manipulation' stamp: 'a 9/16/2019 20:44:41'!
-setCurrentDecider: aDecider
-	currentDecider := aDecider ! !
 
 
 !OOStack methodsFor: 'query' stamp: 'a 9/16/2019 21:00:55'!
@@ -215,10 +242,41 @@ stackEmptyErrorDescription
 
 !classDefinition: #SentenceFinderByPrefix category: #'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
-	instanceVariableNames: ''
+	instanceVariableNames: 'container'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefix methodsFor: 'initialization' stamp: 'a 9/18/2019 00:53:25'!
+with: aContainer
+	container := aContainer.! !
+
+
+!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/18/2019 01:08:14'!
+element: anElement hasPrefix: aPrefix! !
+
+!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/19/2019 01:29:30'!
+find: aPrefix
+	| iterator phrasesWithThePrefix |
+	
+	iterator := ContainerIterator new.
+	iterator setContainer: container.
+	
+	phrasesWithThePrefix := OrderedCollection new.
+	
+	[iterator hasMoreElements] whileTrue: [ 
+		| aPhrase |
+		
+		aPhrase := iterator next.
+		
+		(self phrase: aPhrase hasPrefix: aPrefix) ifTrue: [phrasesWithThePrefix add: aPhrase].
+		].
+	
+	^phrasesWithThePrefix.! !
+
+!SentenceFinderByPrefix methodsFor: 'query' stamp: 'a 9/18/2019 01:12:40'!
+phrase: aPhrase hasPrefix: aPrefix
+	^aPhrase beginsWith: aPrefix ! !
 
 
 !classDefinition: #StackActionDecider category: #'Stack-Exercise'!
