@@ -246,10 +246,11 @@ isPlayingX
 isXat: aPoint 
 	^(board at: aPoint ifAbsent: [^false]) = #X.! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:01:49'!
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:05:52'!
 moveOAt: currentPosition to: aNewPosition
 
 	"chequear ambas posiciones"
+	"chequear si ya hubo ganadores"
 	self checkThatTheFirstSixTurnsHavePassed.
 	self checkTheValidityOfTheMovementFrom: currentPosition to: aNewPosition.
 
@@ -259,10 +260,11 @@ moveOAt: currentPosition to: aNewPosition
 	self changePlayerTurn.
 ! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:01:43'!
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:06:01'!
 moveXAt: currentPosition to: aNewPosition
 
 	"chequear ambas posiciones"
+	"chequear si ya hubo ganadores"
 	self checkThatTheFirstSixTurnsHavePassed.
 	self checkTheValidityOfTheMovementFrom: currentPosition to: aNewPosition.
 		
