@@ -102,8 +102,26 @@ test06IfXIsInAnOutOfRangePositionThenItShouldFail
 	
 	! !
 
-!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 16:58:35'!
-test07IfSomeoneMovesBeforeTheFirstSixTurnsThenItShouldFail
+!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:48:00'!
+test07IfXTriesToPlayInOTurnItShouldFail
+
+	|game|
+	
+	game _ TerniLapilli new.
+	
+	game putXAt: 1@1.
+	
+	self 
+		should: [game putXAt: 1@2]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError | self assert: anError messageText equals: TerniLapilli  notYourTurnErrorMessage.
+							self deny: (game isXat:1@2). 
+							].
+	
+	! !
+
+!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:45:00'!
+test08IfSomeoneMovesBeforeTheFirstSixTurnsThenItShouldFail
 
 	|game|
 	
@@ -124,8 +142,8 @@ test07IfSomeoneMovesBeforeTheFirstSixTurnsThenItShouldFail
 						].	
 	! !
 
-!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:02:41'!
-test08IfXMovesThenItShouldBeInTheNewPosition
+!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:44:44'!
+test09IfXMovesThenItShouldBeInTheNewPosition
 
 	|game|
 	
@@ -139,8 +157,8 @@ test08IfXMovesThenItShouldBeInTheNewPosition
 	
 	! !
 
-!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:53:20'!
-test09IfXDoesAnInvalidMoveThenItShouldFail
+!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:44:36'!
+test10IfXDoesAnInvalidMoveThenItShouldFail
 
 	|game|
 	
@@ -156,8 +174,8 @@ test09IfXDoesAnInvalidMoveThenItShouldFail
 	
 	! !
 
-!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:59:00'!
-test10IfTriesToPutMoreThanSixPiecesThenItShouldFail
+!TerniLapilliTest methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:44:26'!
+test11IfTriesToPutMoreThanSixPiecesThenItShouldFail
 
 	|game|
 	
@@ -187,15 +205,70 @@ changePlayerTurn
 
 ! !
 
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:40:29'!
+checkFullColumn: aPlayer 
+
+	|aPlayerPositions|
+	
+	aPlayerPositions  _ (board select: [:anyPlayer | anyPlayer = aPlayer ]) keys.
+
+	^(aPlayerPositions first y = aPlayerPositions last y) and: (aPlayerPositions first y = (aPlayerPositions at:2) y).
+
+! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:40:23'!
+checkFullRow: aPlayer 
+
+	|aPlayerPositions|
+	
+	aPlayerPositions  _ (board select: [:anyPlayer | anyPlayer = aPlayer ]) keys.
+
+	^(aPlayerPositions first x = aPlayerPositions last x) and: (aPlayerPositions first x = (aPlayerPositions at:2) x).
+
+! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:39:56'!
+checkIfAPlayerWon: aPlayer
+
+	^(self checkFullRow: aPlayer) or:
+	(self checkFullColumn: aPlayer) or:
+	(self checkRightDiagonal: aPlayer) or:
+	(self checkLeftDiagonal: aPlayer)! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:40:36'!
+checkLeftDiagonal: aPlayer 
+
+	|aPlayerPositions|
+	
+	aPlayerPositions  _ (board select: [:anyPlayer | anyPlayer = aPlayer ]) keys.
+
+	^(aPlayerPositions first = (1@3)) and:
+	((aPlayerPositions at:2) = (2@2)) and: 
+	(aPlayerPositions last = (3@1)).
+
+! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:40:43'!
+checkRightDiagonal: aPlayer 
+
+	|aPlayerPositions|
+	
+	aPlayerPositions  _ (board select: [:anyPlayer | anyPlayer = aPlayer ]) keys.
+
+	^(aPlayerPositions first = (1@1)) and:
+	((aPlayerPositions at:2) = (2@2)) and: 
+	(aPlayerPositions last = (3@3)).
+
+! !
+
 !TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:53:02'!
 checkThat: aNewPosition IsNotMoreThanOneDistanceAwayInAnyCoordinateFrom: currentPosition.
 	(((currentPosition x - aNewPosition x) abs > 1) or: ((currentPosition y - aNewPosition y) abs > 1)) ifTrue: [^self error: self class invalidMoveErrorMessage ].	! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:56:01'!
-checkThatActionCanBeExecutedWith: aPosition.
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 04:25:48'!
+checkThatAPositionIsEmpty: aPosition.
 	
-	((self isXat: aPosition) or: (self isOat: aPosition)) ifTrue: [^self error: self class positionOccupiedErrorMessage].
-	(self checkThatPointIsInRange: aPosition) ifFalse: [^self error: self class pointOutOfRangeErrorMessage].
+	((self isXat: aPosition) or: (self isOat: aPosition)) ifTrue: [^self error: self class positionOccupiedErrorMessage]
 ! !
 
 !TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/10/2019 20:00:37'!
@@ -212,12 +285,28 @@ checkThatTheFirstSixTurnsHavePassed
 checkThatThereAreNoMoreThanSixPiecesInTheBoard.
 	(board size == 6) ifTrue: [^self error: self class cannotPutMoreThanSixPiecesErrorMessage]. ! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:02:16'!
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 06:02:30'!
 checkTheValidityOfTheMovementFrom: currentPosition to: aNewPosition
-	self checkThatActionCanBeExecutedWith: aNewPosition.
+
+	self checkThatAPositionIsEmpty: aNewPosition.
+	self checkValidBoardPosition: aNewPosition .
+	self checkValidBoardPosition: currentPosition .
 	self checkThat: aNewPosition IsNotMoreThanOneDistanceAwayInAnyCoordinateFrom: currentPosition.
 	
-	"chequear casos que faltan"	! !
+	
+	
+	"chequear casos que faltan"! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 04:21:16'!
+checkValidBoardPosition: aPosition.
+
+	(self checkThatPointIsInRange: aPosition) ifFalse: [^self error: self class pointOutOfRangeErrorMessage].
+! !
+
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:56:04'!
+checkValidTurn: aPlayer
+
+	((aPlayer = #X) eqv: juegaX ) ifFalse: [self error: self class notYourTurnErrorMessage ]! !
 
 !TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/10/2019 19:50:12'!
 initialize
@@ -274,22 +363,26 @@ moveXAt: currentPosition to: aNewPosition
 	self changePlayerTurn.
 ! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:01:55'!
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:58:07'!
 putOAt: aPoint 
 	
 	self checkThatThereAreNoMoreThanSixPiecesInTheBoard.
-	self checkThatActionCanBeExecutedWith: aPoint.
-		
+	self checkThatAPositionIsEmpty: aPoint.
+	self checkValidBoardPosition: aPoint .
+	self checkValidTurn: #O.
+			
 	board at: aPoint put: #O.
 	
 	self changePlayerTurn.
 ! !
 
-!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 18:02:00'!
+!TerniLapilli methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:56:46'!
 putXAt: aPoint 
 	
-	self checkThatThereAreNoMoreThanSixPiecesInTheBoard.	
-	self checkThatActionCanBeExecutedWith: aPoint.
+	self checkThatThereAreNoMoreThanSixPiecesInTheBoard.
+	self checkThatAPositionIsEmpty: aPoint.
+	self checkValidBoardPosition: aPoint .
+	self checkValidTurn: #X.
 			
 	board at: aPoint put: #X.
 	
@@ -310,14 +403,18 @@ cannotMoveBeforeFirstSixTurnsErrorMessage
 cannotPutMoreThanSixPiecesErrorMessage
 	^'you cant put more than six pieces in the board'! !
 
-!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'Luca 10/10/2019 18:33:09'!
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 01:37:53'!
 initialize
 
-	^self initialize! !
+	^self new initialize! !
 
 !TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'a 10/14/2019 17:03:48'!
 invalidMoveErrorMessage
 	^'an invalid move has been attempted'! !
+
+!TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'Luca 10/16/2019 05:48:32'!
+notYourTurnErrorMessage
+	^'turno incorrecto'! !
 
 !TerniLapilli class methodsFor: 'as yet unclassified' stamp: 'Luca 10/10/2019 20:02:17'!
 pointOutOfRangeErrorMessage
