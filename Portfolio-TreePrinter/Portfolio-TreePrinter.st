@@ -635,6 +635,66 @@ for: aValue
 	^ self new initializeFor: aValue ! !
 
 
+!classDefinition: #TransferDepositLeg category: #'Portfolio-TreePrinter'!
+AccountTransaction subclass: #TransferDepositLeg
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-TreePrinter'!
+
+!TransferDepositLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:24:54'!
+affectBalance: aBalance
+	^aBalance + transfer value! !
+
+!TransferDepositLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:22:41'!
+initializeOf: aTransfer 
+	transfer := aTransfer.! !
+
+!TransferDepositLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:26:23'!
+value
+	^transfer value! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TransferDepositLeg class' category: #'Portfolio-TreePrinter'!
+TransferDepositLeg class
+	instanceVariableNames: ''!
+
+!TransferDepositLeg class methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:21:53'!
+of: aTransfer
+	^self new initializeOf: aTransfer.! !
+
+
+!classDefinition: #TransferWithdrawLeg category: #'Portfolio-TreePrinter'!
+AccountTransaction subclass: #TransferWithdrawLeg
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-TreePrinter'!
+
+!TransferWithdrawLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:25:21'!
+affectBalance: aBalance
+	^aBalance - transfer value! !
+
+!TransferWithdrawLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:22:47'!
+initializeOf: aTransfer 
+	transfer := aTransfer.! !
+
+!TransferWithdrawLeg methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:26:14'!
+value
+	^transfer value! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TransferWithdrawLeg class' category: #'Portfolio-TreePrinter'!
+TransferWithdrawLeg class
+	instanceVariableNames: ''!
+
+!TransferWithdrawLeg class methodsFor: 'as yet unclassified' stamp: 'a.s. 10/24/2019 15:22:22'!
+of: aTransfer
+	^self new initializeOf: aTransfer! !
+
+
 !classDefinition: #Withdraw category: #'Portfolio-TreePrinter'!
 AccountTransaction subclass: #Withdraw
 	instanceVariableNames: 'value'
@@ -678,16 +738,15 @@ Object subclass: #Transfer
 	poolDictionaries: ''
 	category: 'Portfolio-TreePrinter'!
 
-!Transfer methodsFor: 'initialization' stamp: 'a.s. 10/21/2019 20:46:59'!
-initializeFrom: anOrigin to: aDestination with: aValue
-	origin := anOrigin.
-	destination := aDestination.
-	value := aValue.
-	
-	Withdraw register: value on: origin.
-	Deposit register: value on: destination.
+!Transfer methodsFor: 'initialization' stamp: 'a.s. 10/24/2019 15:25:36'!
+initializeFrom: originAccount to: destinationAccount with: aValue
+	origin := TransferWithdrawLeg of: self.
+	originAccount register: origin.
 
-	! !
+	destination := TransferDepositLeg of: self.
+	destinationAccount register: destination.
+	
+	value := aValue.! !
 
 
 !Transfer methodsFor: 'value' stamp: 'a.s. 10/21/2019 20:47:45'!
