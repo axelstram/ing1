@@ -1,0 +1,331 @@
+
+
+----STARTUP---- (31 October 2019 14:03:44) as /home/luca/Desktop/Cuis/CuisUniversity-3938.image!
+
+
+Object subclass: #Carrito
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Carrito category: #TusLibros stamp: 'LI 10/31/2019 14:05:22'!
+Object subclass: #Carrito
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+TestCase subclass: #CarritoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CarritoTest category: #TusLibros stamp: 'LI 10/31/2019 14:06:03'!
+TestCase subclass: #CarritoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CarritoTest methodsFor: 'no messages' stamp: 'LI 10/31/2019 14:07:35'!
+test01CartShouldStartEmpty
+
+	| cart | ! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:08:40' prior: 50777381!
+test01CartShouldStartEmpty
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	self assert: cart isEmpty.! !
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 14:08:41'!
+ERROR!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:08:57'!
+isEmpty
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:09:04' prior: 50777394!
+isEmpty
+	self true.! !
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 14:09:07'!
+ERROR!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:09:21' prior: 50777398!
+isEmpty
+	^true.! !
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 14:09:23'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:50:52'!
+test02AfterAddingTheCartIsNotEmpty
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self deny:cart isEmpty.! !
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 14:50:53'!
+ERROR!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:51:00'!
+add: aString 
+	self shouldBeImplemented.! !
+
+----End fileIn of /home/luca/Desktop/Cuis/Packages/TerseGuide.pck.st----!
+
+!classDefinition: #Cart category: #TusLibros stamp: 'LI 10/31/2019 14:57:13'!
+Object subclass: #Cart
+	instanceVariableNames: 'items'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:57:07' prior: 50777421!
+add: aBook 
+	
+	items at: aBook put: ((items at: aBook ifAbsent:[0])+1).! !
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 14:57:28'!
+ERROR!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 14:57:28'!
+ERROR!
+!Cart class methodsFor: 'no messages' stamp: 'LI 10/31/2019 14:57:59'!
+initialize
+
+	instanceVariables _ Dictionary new.! !
+!Cart class methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:58:16' prior: 50780453!
+initialize
+
+	| items |
+	items _ Dictionary new.! !
+!Cart class methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:59:35' prior: 50780458!
+initialize
+
+	^self new.! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 14:59:48'!
+initialize
+
+	items _ Dictionary new.! !
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 14:59:55'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 14:59:55'!
+FAILURE!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 14:59:55'!
+FAILURE!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:00:28' prior: 50777405!
+isEmpty
+	^items keys isEmpty.! !
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:00:38'!
+PASSED!
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 15:00:38'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:00:38'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:02:26'!
+test03BooksStayInTheCart
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self assert: cart includes: 'aBook'.! !
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:02:26'!
+ERROR!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:02:35'!
+includes: aString 
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:03:01' prior: 50780503!
+includes: aBook
+	
+	^items keys includes: aBook.
+	! !
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:03:03'!
+PASSED!
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 15:03:03'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:03:03'!
+PASSED!
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:03:03'!
+PASSED!
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:07:17'!
+PASSED!
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 15:07:17'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:07:17'!
+PASSED!
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:07:17'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:09:06'!
+test03BooksThatAreNotInTheCartDontShowUp
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self assert: cart includes: 'aBook'.
+	self assert: cart includes: 'otherBook'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:09:13'!
+test04BooksThatAreNotInTheCartDontShowUp
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self assert: cart includes: 'aBook'.
+	self assert: cart includes: 'otherBook'.! !
+
+!methodRemoval: CartTest #test03BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:09:16'!
+test03BooksThatAreNotInTheCartDontShowUp
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self assert: cart includes: 'aBook'.
+	self assert: cart includes: 'otherBook'.!
+
+!testRun: #CartTest #test04BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:09:19'!
+FAILURE!
+
+!testRun: #CartTest #test04BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:09:19'!
+FAILURE!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:09:40' prior: 50780544!
+test04BooksThatAreNotInTheCartDontShowUp
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	
+	self assert: cart includes: 'aBook'.
+	self deny: (cart includes: 'otherBook').! !
+
+!testRun: #CartTest #test04BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:09:42'!
+PASSED!
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 15:09:42'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:09:42'!
+PASSED!
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:09:42'!
+PASSED!
+
+!testRun: #CartTest #test04BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:09:42'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:11:04'!
+test05CartRemembersAmmountOfBooks
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	
+	self assert: (cart quantity: 'aBook').
+! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:11:11'!
+test05CartRemembersAmountOfBooks
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	
+	self assert: (cart quantity: 'aBook').
+! !
+
+!methodRemoval: CartTest #test05CartRemembersAmmountOfBooks stamp: 'LI 10/31/2019 15:11:14'!
+test05CartRemembersAmmountOfBooks
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	
+	self assert: (cart quantity: 'aBook').
+!
+
+!testRun: #CartTest #test05CartRemembersAmountOfBooks stamp: 'LI 10/31/2019 15:11:18'!
+ERROR!
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:11:24'!
+quantity: aString 
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:16:04' prior: 50780619!
+quantity: aBook.
+
+	^items at: aBook ifAbsent: [self errorCartDoesNotHaveThatBook]! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:16:32' prior: 50780624!
+quantity: aBook.
+
+	^items at: aBook ifAbsent: [0]! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LI 10/31/2019 15:16:58' prior: 50780600!
+test05CartRemembersAmountOfBooks
+
+	| cart | 
+	
+	cart _ Cart new.
+	
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	cart add: 'aBook'.
+	
+	self assert: (cart quantity: 'aBook' )equals: 3.
+! !
+
+!testRun: #CartTest #test05CartRemembersAmountOfBooks stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+!testRun: #CartTest #test01CartShouldStartEmpty stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+!testRun: #CartTest #test02AfterAddingTheCartIsNotEmpty stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+!testRun: #CartTest #test03BooksStayInTheCart stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+!testRun: #CartTest #test04BooksThatAreNotInTheCartDontShowUp stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+!testRun: #CartTest #test05CartRemembersAmountOfBooks stamp: 'LI 10/31/2019 15:16:59'!
+PASSED!
+
+----QUIT----(31 October 2019 15:20:12) CuisUniversity-3938.image priorSource: 14319118!
